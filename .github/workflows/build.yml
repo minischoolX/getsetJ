@@ -2,16 +2,11 @@ name: Build & Release
 
 on:
   workflow_dispatch:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   push:
     branches:
       - master
     paths-ignore:
       - 'app/build.gradle'
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
 
 jobs:
   build:
@@ -68,10 +63,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          tag_name: v$VERSION
-          release_name: Release $VERSION
+          tag_name: v${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
           body: |
-            Release $VERSION
+            Release ${{ env.VERSION }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -82,5 +77,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: app/build/outputs/apk/debug/app-debug.apk
-          asset_name: app-debug-$VERSION.apk
+          asset_name: app-debug-${{ env.VERSION }}.apk
           asset_content_type: application/apk
