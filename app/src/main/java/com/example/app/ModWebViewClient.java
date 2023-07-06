@@ -30,8 +30,11 @@ public class ModWebViewClient extends WebViewClient {
   public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
     isAdBlocked = getAdBlockSetting(view.getContext());
     if (isAdBlocked) {
-      isPopulatingHosts = true;
-      populateBlockedHosts(view.getContext());
+      if (blockedHosts == null) {
+        isPopulatingHosts = true;
+        populateBlockedHosts(view.getContext());
+        return super.shouldInterceptRequest(view, url);
+       }
       return shouldBlockRequest(url);
     }
     return super.shouldInterceptRequest(view, url);
@@ -42,8 +45,11 @@ public class ModWebViewClient extends WebViewClient {
     String url = request.getUrl().toString();
     isAdBlocked = getAdBlockSetting(view.getContext());
     if (isAdBlocked) {
-      isPopulatingHosts = true;
-      populateBlockedHosts(view.getContext());
+      if (blockedHosts == null) {
+        isPopulatingHosts = true;
+        populateBlockedHosts(view.getContext());
+        return super.shouldInterceptRequest(view, request);
+      }
       return shouldBlockRequest(url);
     }
     return super.shouldInterceptRequest(view, request);
