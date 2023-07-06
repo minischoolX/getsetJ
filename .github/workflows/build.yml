@@ -66,11 +66,15 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+          run: |
+            # Get the current version from the build.gradle file
+            VERSION=$(grep -oP '(?<=versionName ")[^"]*' app/build.gradle)
+            echo "Version: $VERSION"
         with:
-          tag_name: $NEW_VERSION
-          release_name: Release $NEW_VERSION
+          tag_name: "v$VERSION"
+          release_name: Release "$VERSION"
           body: |
-            Release $NEW_VERSION
+            Release "$VERSION"
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -81,5 +85,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: app/build/outputs/apk/debug/app-debug.apk
-          asset_name: app-debug-$NEW_VERSION.apk
+          asset_name: app-debug-"$VERSION".apk
           asset_content_type: application/apk
