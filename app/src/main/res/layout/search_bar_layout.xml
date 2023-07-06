@@ -1,0 +1,27 @@
+<!-- search_bar_layout.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/settingsButton"
+        android:layout_toLeftOf="@+id/settingsButton"
+        android:hint="Enter URL or search term"
+        android:inputType="text"
+        android:imeOptions="actionGo"
+        android:imeActionLabel="Search"
+        android:onEditorAction="handleSearch" />
+
+      <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_settings"
+        android:background="@android:color/transparent" />
+  
+</RelativeLayout>
