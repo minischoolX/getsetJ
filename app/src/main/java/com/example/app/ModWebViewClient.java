@@ -22,27 +22,27 @@ public class ModWebViewClient extends WebViewClient {
   private TreeMap<String, Object> blockedHosts;
 
   private boolean getAdBlockSetting() {
-    SharedPreferences adBlockSharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
-    return adBlockSharedPreferences.getBoolean("adBlock", false);
+    SharedPreferences sharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
+    return sharedPreferences.getBoolean("adBlock", false);
   }
  
   @Override
   public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
     if (isAdBlocked) {
-      populateBlockedHosts(view.context);
+      populateBlockedHosts(view.getContext());
       return shouldBlockRequest(url);
     }
-    return false;
+    return super.shouldInterceptRequest(view, url);
   }
 
   @Override
   public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
     String url = request.getUrl().toString();
     if (isAdBlocked) {
-      populateBlockedHosts(view.context);
+      populateBlockedHosts(view.getContext());
       return shouldBlockRequest(url);
     }
-    return false;
+    return super.shouldInterceptRequest(view, request);
   }
 
   private void populateBlockedHosts(Context context) {
