@@ -1,0 +1,66 @@
+name: Build & Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'app/build.gradle'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build App
+        run: ./gradlew assembleDebug
+
+      - name: Version+
+        run: |
+          # Get the current version from the build.gradle file
+          CURRENT_VERSION=$(grep -oP '(?<=versionName ")[^"]*' app/build.gradle)
+          echo "Current Version: $CURRENT_VERSION"
+          
+          # Increment the version
+          NEW_VERSION=$(echo "$CURRENT_VERSION" | awk -F. -v OFS=. '{$NF++;print}')
+          echo "New Version: $NEW_VERSION"
+          
+          # Replace the version in the build.gradle file
+          sed -i "s/versionName \"$CURRENT_VERSION\"/versionName \"$NEW_VERSION\"/" app/build.gradle
+
+          # Commit and push the changes to build.gradle
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git add app/build.gradle
+          git commit -m "Increment version to $NEW_VERSION"
+          git push origin HEAD:main
+
+      - name: Build App
+        run: ./gradlew assembleDebug
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          tag_name: v$NEW_VERSION
+          release_name: Release $NEW_VERSION
+          body: |
+            Release $NEW_VERSION
+          draft: false
+          prerelease: false
+          files: |
+            app/build/outputs/apk/debug/app-debug.apk
