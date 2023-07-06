@@ -43,13 +43,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void loadSettings() {
         SharedPreferences adBlockSharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
-        boolean isAdBlockEnabled = sharedPreferences.getBoolean("adBlock", false);
+        boolean isAdBlockEnabled = adBlockSharedPreferences.getBoolean("adBlock", false);
         adBlockSwitch.setChecked(isAdBlockEnabled);
     }
 
     private void saveAdBlockSetting(boolean isEnabled) {
-        SharedPreferences adBlocksharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
-        SharedPreferences.Editor adBlockeditor = sharedPreferences.edit();
+        SharedPreferences adBlockSharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor adBlockeditor = adBlockSharedPreferences.edit();
         adBlockeditor.putBoolean("adBlock", isEnabled);
         adBlockeditor.apply();
     }
