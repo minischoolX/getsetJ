@@ -34,12 +34,6 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Version
-    
-    
-    
-    
-    # Set the global variable for the new version
-    echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
         run: |
           # Get the current version and application ID from the build.gradle file
           CURRENT_VERSION=$(grep -oP '(?<=versionName ")[^"]*' app/build.gradle)
