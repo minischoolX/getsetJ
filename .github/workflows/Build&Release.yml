@@ -49,9 +49,12 @@ jobs:
           echo "New Version: $NEW_VERSION"
           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
           
+          NUMERIC_VERSION=$(echo "$NEW_VERSION" | awk -F. '{for (i=1; i<=NF; i++) { printf "%s", tolower(tolower($i)) } printf "\n" }')
+          echo "Numeric Version: $NUMERIC_VERSION"
+          
           # Modify the application ID by appending the new version
-          NEW_APP_ID="com.example.app.${NEW_VERSION}"
-          NEW_PACKAGE="com.example.app.${NEW_VERSION}"
+          NEW_APP_ID="com.example.app.${NUMERIC_VERSION}"
+          NEW_PACKAGE="com.example.app.${NUMERIC_VERSION}"
           echo "New Application ID: $NEW_APP_ID"
           echo "New Package Name: $NEW_PACKAGE"
     
