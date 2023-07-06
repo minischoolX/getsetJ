@@ -2,11 +2,16 @@ name: Build & Release
 
 on:
   workflow_dispatch:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   push:
     branches:
       - master
     paths-ignore:
       - 'app/build.gradle'
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
 
 jobs:
   build:
@@ -51,26 +56,29 @@ jobs:
           git config --global user.email ${{ github.actor }}@outlook.com
           git add app/build.gradle
           git commit -m "Increment version to $NEW_VERSION"
-          git push origin HEAD:main
+          git push origin HEAD:master
 
-#      - name: Commit
-#        uses: stefanzweifel/git-auto-commit-action@v4
-#        with:
-#          commit_message: "Increment version to $NEW_VERSION"
-        
       - name: Build App
         run: ./gradlew assembleDebug
 
       - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          tag_name: v$NEW_VERSION
-          release_name: Release $NEW_VERSION
+          tag_name: ${{ NEW_VERSION }}
+          release_name: Release ${{ NEW_VERSION }}
           body: |
-            Release $NEW_VERSION
+            Release ${{ NEW_VERSION }}
           draft: false
           prerelease: false
-          files: |
-            app/build/outputs/apk/debug/app-debug.apk
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_path: app/build/outputs/apk/debug/app-debug.apk
+          asset_name: app-debug.apk
+          asset_content_type: application/apk
