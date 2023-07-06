@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import android.webkit.WebViewClient;
+
 import android.content.Intent;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -33,7 +35,7 @@ public class MainActivity extends Activity {
         
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.setWebViewClient(new WebViewClient());
 
         // Set OnEditorActionListener for searchEditText
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -63,11 +65,11 @@ public class MainActivity extends Activity {
 
         if (isValidUrl(searchText)) {
             // Load URL in the WebView
-            webView.loadUrl(searchText);
+            mWebView.loadUrl(searchText);
         } else {
             // Perform a Google search
             String googleSearchUrl = "https://www.google.com/search?q=" + searchText;
-            webView.loadUrl(googleSearchUrl);
+            mWebView.loadUrl(googleSearchUrl);
         }
     }
 
