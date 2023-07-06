@@ -63,13 +63,13 @@ jobs:
 
       - name: Create Release
         id: create_release
+        run: |
+          # Get the current version from the build.gradle file
+          VERSION=$(grep -oP '(?<=versionName ")[^"]*' app/build.gradle)
+          echo "Version: $VERSION"
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-          run: |
-            # Get the current version from the build.gradle file
-            VERSION=$(grep -oP '(?<=versionName ")[^"]*' app/build.gradle)
-            echo "Version: $VERSION"
         with:
           tag_name: "v$VERSION"
           release_name: Release "$VERSION"
