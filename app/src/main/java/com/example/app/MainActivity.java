@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.text.InputType;
 
 public class MainActivity extends Activity {
 
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
         
         mWebView = findViewById(R.id.activity_main_webview);
         searchEditText = findViewById(R.id.searchEditText);
+        searchEditText.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         settingsButton = findViewById(R.id.settingsButton);
         
         WebSettings webSettings = mWebView.getSettings();
@@ -41,7 +43,7 @@ public class MainActivity extends Activity {
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_GO) {
+                if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     performSearch();
                     return true;
                 }
