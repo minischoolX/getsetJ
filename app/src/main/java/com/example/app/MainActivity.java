@@ -8,6 +8,7 @@ import android.webkit.WebView;
 
 import android.webkit.WebViewClient;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private WebView mWebView;
     private EditText searchEditText;
     private ImageButton settingsButton;
+    private Boolean isAdBlocked;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -34,10 +36,12 @@ public class MainActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         searchEditText.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         settingsButton = findViewById(R.id.settingsButton);
+
+        isAdBlocked = getAdBlockSetting();
         
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.setWebViewClient(new modWebViewClient());
 
         // Set OnEditorActionListener for searchEditText
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -61,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
         
         mWebView.loadUrl("https://google.com");
     }
+
+    private boolean getAdBlockSetting() {
+        SharedPreferences adBlockSharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
+        return adBlockSharedPreferences.getBoolean("adBlock", false);
+    }
+
 
     private void performSearch() {
         String searchText = searchEditText.getText().toString().trim();
