@@ -55,11 +55,7 @@ public class MainActivity extends Activity {
             }
         });
         
-        // REMOTE RESOURCE
-        // mWebView.loadUrl("https://example.com");
-
-        // LOCAL RESOURCE
-        // mWebView.loadUrl("file:///android_asset/index.html");
+        mWebView.loadUrl("https://google.com");
     }
 
     private void performSearch() {
