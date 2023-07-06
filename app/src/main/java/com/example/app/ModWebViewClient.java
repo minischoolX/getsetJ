@@ -17,17 +17,18 @@ import java.io.InputStreamReader;
 import java.util.TreeMap;
 
 public class ModWebViewClient extends WebViewClient {
-  private Boolean isAdBlocked = getAdBlockSetting();
+  private Boolean isAdBlocked;
   private boolean isPopulatingHosts;
   private TreeMap<String, Object> blockedHosts;
 
-  private boolean getAdBlockSetting() {
-    SharedPreferences sharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
+  private boolean getAdBlockSetting(Context context) {
+    SharedPreferences sharedPreferences = getSharedPreferences("AdBlockPref", context.MODE_PRIVATE);
     return sharedPreferences.getBoolean("adBlock", false);
   }
  
   @Override
   public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+    isAdBlocked = getAdBlockSetting(view.getContext());
     if (isAdBlocked) {
       populateBlockedHosts(view.getContext());
       return shouldBlockRequest(url);
