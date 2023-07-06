@@ -39,7 +39,7 @@ jobs:
           # Get the current version and application ID from the build.gradle file
           CURRENT_VERSION=$(grep -oP '(?<=versionName ")[^"]*' app/build.gradle)
           CURRENT_APP_ID=$(grep -oP '(?<=applicationId ")[^"]*' app/build.gradle)
-          CURRENT_PACKAGE=$(grep -oP '(?<=package=")[^"]*' AndroidManifest.xml)
+          CURRENT_PACKAGE=$(grep -oP '(?<=package=")[^"]*' app/src/main/AndroidManifest.xml)
           echo "Current Version: $CURRENT_VERSION"
           echo "Current Application ID: $CURRENT_APP_ID"
           echo "Current Package Name: $CURRENT_PACKAGE"
@@ -50,15 +50,15 @@ jobs:
           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
           
           # Modify the application ID by appending the new version
-          NEW_APP_ID="${CURRENT_APP_ID}.${NEW_VERSION}"
-          NEW_PACKAGE="${CURRENT_PACKAGE}.${NEW_VERSION}"
+          NEW_APP_ID="com.example.app.${NEW_VERSION}"
+          NEW_PACKAGE="com.example.app.${NEW_VERSION}"
           echo "New Application ID: $NEW_APP_ID"
           echo "New Package Name: $NEW_PACKAGE"
     
           # Update the version and application ID in the build.gradle file
           sed -i "s/versionName \"$CURRENT_VERSION\"/versionName \"$NEW_VERSION\"/" app/build.gradle
           sed -i "s/applicationId \"$CURRENT_APP_ID\"/applicationId \"$NEW_APP_ID\"/" app/build.gradle
-          sed -i "s/package=\"$CURRENT_PACKAGE\"/package=\"$NEW_PACKAGE\"/" AndroidManifest.xml
+          sed -i "s/package=\"$CURRENT_PACKAGE\"/package=\"$NEW_PACKAGE\"/" app/src/main/AndroidManifest.xml
 
           # Commit and push the changes to build.gradle
           git config --global user.name ${{ github.actor }}
