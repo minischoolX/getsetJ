@@ -64,6 +64,7 @@ jobs:
           git config --global user.name ${{ github.actor }}
           git config --global user.email ${{ github.actor }}@outlook.com
           git add app/build.gradle
+          git add app/src/main/AndroidManifest.xml
           git commit -m "Increment version to $NEW_VERSION"
           git push origin HEAD:master
 
