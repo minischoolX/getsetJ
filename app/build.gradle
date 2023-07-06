@@ -4,11 +4,11 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.example.app"
+        applicationId "com.example.app.oneone"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
     }
     buildTypes {
         release {
