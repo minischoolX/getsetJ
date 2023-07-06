@@ -11,10 +11,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
+    permissions:
+      contents: write
+      
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -28,7 +33,7 @@ jobs:
       - name: Build App
         run: ./gradlew assembleDebug
 
-      - name: Version+
+      - name: Version
         run: |
           # Get the current version from the build.gradle file
           CURRENT_VERSION=$(grep -oP '(?<=versionName ")[^"]*' app/build.gradle)
@@ -48,6 +53,11 @@ jobs:
           git commit -m "Increment version to $NEW_VERSION"
           git push origin HEAD:main
 
+#      - name: Commit
+#        uses: stefanzweifel/git-auto-commit-action@v4
+#        with:
+#          commit_message: "Increment version to $NEW_VERSION"
+        
       - name: Build App
         run: ./gradlew assembleDebug
 
