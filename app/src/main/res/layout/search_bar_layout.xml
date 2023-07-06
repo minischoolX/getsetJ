@@ -12,8 +12,7 @@
         android:hint="Enter URL or search term"
         android:inputType="text"
         android:imeOptions="actionGo"
-        android:imeActionLabel="Search"
-        android:onEditorAction="handleSearch" />
+        android:imeActionLabel="Search" />
 
       <ImageButton
         android:id="@+id/settingsButton"
