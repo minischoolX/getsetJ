@@ -3,61 +3,60 @@ package com.example.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.CheckBox;
+import android.widget.Switch;
 import android.widget.CompoundButton;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class SettingsActivity extends Activity {
-    private CheckBox darkModeCheckbox;
-    // Add references to other settings UI elements as needed
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class SettingsActivity extends AppCompatActivity {
+    private Switch adBlockSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Find views
-        darkModeCheckbox = findViewById(R.id.darkModeCheckbox);
-        // Find other settings UI elements
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View titleBar = inflater.inflate(R.layout.custom_title_bar, null);
+        getSupportActionBar().setCustomView(titleBar);
+        
+        adBlockSwitch = findViewById(R.id.adBlockSwitch);
 
-        // Load and apply saved settings
         loadSettings();
-
-        // Set listeners or handlers for settings UI elements
-        darkModeCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        
+        adBlockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Save the dark mode setting
-                saveDarkModeSetting(isChecked);
-
-                // Apply the dark mode setting immediately (if desired)
-                applyDarkModeSetting(isChecked);
+                saveAdBlockSetting(isChecked);
             }
         });
-
-        // Set listeners or handlers for other settings UI elements
     }
 
     private void loadSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
-        boolean isDarkModeEnabled = sharedPreferences.getBoolean("darkMode", false);
-        // Load and apply other settings as needed
-
-        // Set the UI elements based on the loaded settings
-        darkModeCheckbox.setChecked(isDarkModeEnabled);
-        // Set other UI elements based on the loaded settings
+        SharedPreferences adBlockSharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
+        boolean isAdBlockEnabled = sharedPreferences.getBoolean("adBlock", false);
+        adBlockSwitch.setChecked(isAdBlockEnabled);
     }
 
-    private void saveDarkModeSetting(boolean isEnabled) {
-        SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("darkMode", isEnabled);
-        editor.apply();
+    private void saveAdBlockSetting(boolean isEnabled) {
+        SharedPreferences adBlocksharedPreferences = getSharedPreferences("AdBlockPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor adBlockeditor = sharedPreferences.edit();
+        adBlockeditor.putBoolean("adBlock", isEnabled);
+        adBlockeditor.apply();
     }
 
-    private void applyDarkModeSetting(boolean isEnabled) {
-        // Apply the dark mode setting in your WebView or app-wide as per your implementation
-    }
-
-    // Add other helper methods and settings handling logic as needed
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }    
 }
