@@ -7,6 +7,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import android.webkit.WebViewClient;
+import android.content.SharedPreferences;
 
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new modWebViewClient());
+        mWebView.setWebViewClient(new ModWebViewClient());
 
         // Set OnEditorActionListener for searchEditText
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
