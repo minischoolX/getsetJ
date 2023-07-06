@@ -1,7 +1,7 @@
 package com.example.app;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,7 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.text.InputType;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private WebView mWebView;
     private EditText searchEditText;
