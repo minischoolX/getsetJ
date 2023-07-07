@@ -21,13 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View titleBar = inflater.inflate(R.layout.custom_title_bar, null);
-        getSupportActionBar().setCustomView(titleBar);
         
         adBlockSwitch = findViewById(R.id.adBlockSwitch);
 
@@ -54,9 +47,4 @@ public class SettingsActivity extends AppCompatActivity {
         adBlockeditor.apply();
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }    
 }
